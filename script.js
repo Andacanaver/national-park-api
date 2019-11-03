@@ -57,9 +57,10 @@ function displayResults(responseJson) {
     $('#results-list').empty();
 
     for (let i = 0; i < responseJson.data.length; i++) {
+        let park = responseJson.data[i];
         $('#results-list').append(
-            `<li><h3>${responseJson.data[i].fullName}</h3><p><span>Description:</span> ${responseJson.data[i].description}</p><p><span>URL:</span> <a href="${responseJson.data[i].url}" target="_blank">${responseJson.data[i].url}</a></p></li>`
-        )
+            `<li><h3>${park.fullName}</h3><p><span>Description:</span> ${park.description}</p><p><span>URL:</span> <a href="${park.url}" target="_blank">${park.url}</a></p></li>`
+        );
     };
     $('#results').removeClass('hidden');
 }
