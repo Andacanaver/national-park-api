@@ -11,11 +11,15 @@ function stateSelection() {
             `<li><label for="${states[i]}">${states[i]}</label><input type="checkbox" id="${states[i]}" name="${states[i]}" value="${states[i]}" required></li>`)
     };
 }
+
 function statesSelected() {
     $("input[name='options[]']:checked").each(function () {
-    selectedStates.push(parseInt($(this).val()));
-});
+        selectedStates.push(parseInt($(this).val()));
+    });
 }
+let checkedVals = $('.checked:checkbox:checked').map(function () {
+    return this.value;
+}).get();
 
 function stateRequired() {
     let requiredCheckboxes = $(':checkbox[required]');
@@ -36,7 +40,7 @@ function selectedState() {
             $(this).removeClass("checked");
         }
     });
-    $('input.checked').each(function() {
+    $('input.checked').each(function () {
         selectedStates.push($(this).val());
     });
 }
@@ -53,49 +57,50 @@ function displayResults(responseJson) {
     $('#results-list').empty();
 
     for (let i = 0; i < responseJson.data.length; i++) {
-            $('#results-list').append(
-                `<li><h3>${responseJson.data[i].fullName}</h3><p>${responseJson.data[i].description}</p><p><a href="${responseJson.data[i].url}" target="_blank">${responseJson.data[i].url}</a></p></li>`
-            )
-        };
-        $('#results').removeClass('hidden');
-    }
+        $('#results-list').append(
+            `<li><h3>${responseJson.data[i].fullName}</h3><p><span>Description:</span> ${responseJson.data[i].description}</p><p><span>URL:</span> <a href="${responseJson.data[i].url}" target="_blank">${responseJson.data[i].url}</a></p></li>`
+        )
+    };
+    $('#results').removeClass('hidden');
+}
 
-    function getParks(query, maxResults = 10) {
-        const params = {
-            api_key: apiKey,
-            stateCode: query,
-            limit: maxResults
-        };
-        const queryString = formatQueryParams(params);
-        const url = searchURL + '?' + queryString;
+function getParks(query, maxResults = 10) {
+    const params = {
+        api_key: apiKey,
+        stateCode: query,
+        limit: maxResults
+    };
+    const queryString = formatQueryParams(params);
+    const url = searchURL + '?' + queryString;
 
-        console.log(url);
+    console.log(url);
 
-        fetch(url)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error(response.statusText);
-            })
-            .then(responseJson => displayResults(responseJson))
-            .catch(err => {
-                $('#js-error-message').text(`Something went wrong: ${err.message}`);
-            })
+    fetch(url)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => displayResults(responseJson))
+        .catch(err => {
+            $('#js-error-message').text(`Something went wrong: ${err.message}`);
+        })
 
-    }
+}
 
-    function watchForm() {
-        stateSelection();
-        stateRequired();
-        selectedState();
-        statesSelected();
-        $('form').submit(event => {
-            event.preventDefault();
-            const search = $('.checked').val();
-            const maxResults = $('#max-results').val();
-            getParks(search, maxResults);
-        });
-    }
-    console.log(selectedStates);
-    $(watchForm);
+function watchForm() {
+    stateSelection();
+    stateRequired();
+    selectedState();
+    statesSelected();
+    $('form').submit(event => {
+        event.preventDefault();
+        const search = $('.checked:checkbox:checked').map(function () {
+            return this.value;
+        }).get();
+        const maxResults = $('#max-results').val();
+        getParks(search, maxResults);
+    });
+}
+$(watchForm);
