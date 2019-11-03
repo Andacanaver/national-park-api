@@ -10,8 +10,11 @@ function stateSelection() {
         $('#state-list').append(
             `<li><label for="${states[i]}">${states[i]}</label><input type="checkbox" id="${states[i]}" name="${states[i]}" value="${states[i]}" required></li>`)
     };
-
-
+}
+function statesSelected() {
+    $("input[name='options[]']:checked").each(function () {
+    selectedStates.push(parseInt($(this).val()));
+});
 }
 
 function stateRequired() {
@@ -32,6 +35,9 @@ function selectedState() {
         } else {
             $(this).removeClass("checked");
         }
+    });
+    $('input.checked').each(function() {
+        selectedStates.push($(this).val());
     });
 }
 
@@ -83,6 +89,7 @@ function displayResults(responseJson) {
         stateSelection();
         stateRequired();
         selectedState();
+        statesSelected();
         $('form').submit(event => {
             event.preventDefault();
             const search = $('.checked').val();
