@@ -47,48 +47,48 @@ function displayResults(responseJson) {
     $('#results-list').empty();
 
     for (let i = 0; i < responseJson.data.length; i++) {
-        $('#results-list').append(
-            `<li><h3>${responseJson.data[i]}</h3><p>${responseJson.data[i]}</p></li>`
-        )
-    };
-    $('#results').removeClass('hidden');
-}
+            $('#results-list').append(
+                `<li><h3>${responseJson.data[i].fullName}</h3><p>${responseJson.data[i].description}</p><p><a href="${responseJson.data[i].url}" target="_blank">${responseJson.data[i].url}</a></p></li>`
+            )
+        };
+        $('#results').removeClass('hidden');
+    }
 
-function getParks(query, maxResults = 10) {
-    const params = {
-        api_key: apiKey,
-        q: query,
-        limit: maxResults
-    };
-    const queryString = formatQueryParams(params);
-    const url = searchURL + '?' + queryString;
+    function getParks(query, maxResults = 10) {
+        const params = {
+            api_key: apiKey,
+            stateCode: query,
+            limit: maxResults
+        };
+        const queryString = formatQueryParams(params);
+        const url = searchURL + '?' + queryString;
 
-    console.log(url);
+        console.log(url);
 
-    fetch(url)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error(response.statusText);
-        })
-        .then(responseJson => console.log(responseJson))
-        .catch(err => {
-            $('#js-error-message').text(`Something went wrong: ${err.message}`);
-        })
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error(response.statusText);
+            })
+            .then(responseJson => displayResults(responseJson))
+            .catch(err => {
+                $('#js-error-message').text(`Something went wrong: ${err.message}`);
+            })
 
-}
+    }
 
-function watchForm() {
-    stateSelection();
-    stateRequired();
-    selectedState();
-    $('form').submit(event => {
-        event.preventDefault();
-        const search = $('.checked').val();
-        const maxResults = $('#max-results').val();
-        getParks(search, maxResults);
-    });
-}
-console.log(selectedStates);
-$(watchForm);
+    function watchForm() {
+        stateSelection();
+        stateRequired();
+        selectedState();
+        $('form').submit(event => {
+            event.preventDefault();
+            const search = $('.checked').val();
+            const maxResults = $('#max-results').val();
+            getParks(search, maxResults);
+        });
+    }
+    console.log(selectedStates);
+    $(watchForm);
