@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>National Parks Search</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <header role="heading">
+        <h1>Search National Parks</h1>
+    </header>
+
+    <main role="main">
+        <form>
+           <div id="states">
+               <ul id="state-list">
+                   <li><label for="MN">MN</label><input type="checkbox" name="MN" id="MN"> </li>
+               </ul>
+           </div>
+            
+            <label for="max-results">How many results would you like to see?</label>
+            <input type="number" id="max-results" name="max-results" required value="10">
+            <button type="submit">Submit</button>
+        </form>
+        <p id="js-error-message" class="error-message"></p>
+        <section id="results" class="hidden">
+            <h2>Search Results</h2>
+            <ul id="results-list">
+
+            </ul>
+
+        </section>
+
+    </main>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="script.js" type="text/javascript"></script>
+</body>
+
+</html>
