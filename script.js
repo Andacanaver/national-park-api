@@ -53,7 +53,6 @@ function formatQueryParams(params) {
 }
 
 function displayResults(responseJson) {
-    console.log(responseJson);
     $('#results-list').empty();
 
     for (let i = 0; i < responseJson.data.length; i++) {
@@ -74,7 +73,7 @@ function getParks(query, maxResults = 10) {
     const queryString = formatQueryParams(params);
     const url = searchURL + '?' + queryString;
 
-    console.log(url);
+    
 
     fetch(url)
         .then(response => {
